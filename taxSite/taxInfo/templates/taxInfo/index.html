@@ -1,0 +1,11 @@
+<h1>Taxon Finder</h1>
+
+<p>Please enter a taxon Name or ID<p>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="results" method="get">
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" value="Search">
+</form>

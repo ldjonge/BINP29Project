@@ -1,0 +1,26 @@
+{% if result %}
+  <h1 style="color:red">{{ result.sciName }}</h1>
+  <p>Taxon ID: {{ result.idNumber }}<br>
+  Scientific Name: {{ result.sciName }}<br>
+  {% if result.comName %}
+    Common Name: {{ result.comName }}<br>
+  {% endif %}
+  {% if result.genComName %}
+   Genbank Common Name: {{ result.genComName }}<br>
+  {% endif %}
+  {% if result.gcID %}
+  Genetic Code: {{ result.gcID }}<br>
+  {% endif %}
+  {% if result.mgcID %}
+  Mitochondrial Genetic Code: {{ result.mgcID }}<br>
+  {% endif %}
+  </p>
+  <h2>Lineage</h2>
+  <p>
+  {% for tax in lineage %}
+  {{ tax }}<br>
+  {% endfor %}
+  </p>
+{% else %}
+  <p>Unidentified ID</p>
+{% endif %}
