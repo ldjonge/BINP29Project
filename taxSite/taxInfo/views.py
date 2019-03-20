@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from random import randint
 from django.views import generic
+from django.urls import reverse
 
 from .models import Tax, Names
 from .forms import SearchForm
@@ -14,29 +14,52 @@ def index(request):
     context = {'form': form}
     return HttpResponse(template.render(context,request))
 
+class SearchQuery(generic.DetailView):
+    def getId(request, searchQuery):
+        pass
+
 def getId(request):
     if request.method=='GET':
-        form = SearchForm(request.GET)
-        if form.isvalid():
-            if form.cleaned_data['nameSearch']:
-                taxon is Names.objects.get(altName = form.cleaned_data['nameSearch'])
+        if request.GET:
+            if request.GET['nameSearch']:
+                taxon = Names.objects.get(altName=request.GET['nameSearch'])
                 idNumber = taxon.idNumber
-            else:
-                idNumber = form.cleaned_data['idSearch']
-            return HttpResponseRedirect(reverse('taxInfo:results', args = idNumber))
-    return render(request, 'index.html', {'form' : form})
+            elif request.GET['idSearch']:
+                idNumber = request.GET['idSearch']
+            return HttpResponseRedirect(reverse('results', args=(idNumber,)))
+        else:
+            return HttpResponseRedirect('')
 
-def results(request):
+
+    '''
     if request.method=='GET':
         form = SearchForm(request.GET)
-        if form.isvalid():
+        if form.is_valid():
+            return form.cleaned_data
             if form.cleaned_data['nameSearch']:
-                taxon is Names.objects.get(altName = form.cleaned_data['nameSearch'])
+                taxon = Names.objects.get(altName = form.cleaned_data['nameSearch'])
                 idNumber = taxon.idNumber
             elif form.cleaned_data['idSearch']:
                 idNumber = form.cleaned_data['idSearch']
             else:
-                HttpResponseRedirect('/index/')
+                return render(request, 'index.html', {'form' : form})
+            return render()
+            #reverse('taxInfo:results', args = idNumber))
+    '''
+
+
+def results(request, idNumber):
+    #if request.method=='GET':
+    #    form = SearchForm(request.GET)
+    #    return HttpResponseRedirect('')
+    #    if form.isvalid():
+    #        if form.cleaned_data['nameSearch']:
+    #            taxon = Names.objects.get(altName = form.cleaned_data['nameSearch'])
+    #            idNumber = taxon.idNumber
+    #        elif form.cleaned_data['idSearch']:
+    #            idNumber = form.cleaned_data['idSearch']
+    #        else:
+    #            return HttpResponseRedirect('/index/')
 
     template = loader.get_template('taxInfo/results.html')
     try:
@@ -55,5 +78,5 @@ def results(request):
     context = {'result': result, 'lineage': lineage}
     return HttpResponse(template.render(context, request))
 
-class ResultsView(generic.DetailView):
-    model = Tax
+#class ResultsView(generic.DetailView):
+#    model = Tax
