@@ -8,13 +8,13 @@ Django is a package for python3 that must be installed on the system before this
 The data was retrieved from the European Bioinformatics Institute. To download the data use "wget ftp://ftp.ebi.ac.uk/pub/databases/taxonomy/taxonomy.dat" in the main directory of this project.
 
 # Creating the SQL database
-To set up the initial database structure, run the following commands in the main project directory:
-python3 manage.py makemigrations
-python3 manage.py migrate
-Then to enter the downloaded data into this database run the following command:
-python3 createTaxDb.py taxonomy.dat
+To set up the initial database structure, run the following commands in the main project directory:  
+python3 manage.py makemigrations  
+python3 manage.py migrate  
+Then to enter the downloaded data into this database run the following command:  
+python3 createTaxDb.py taxonomy.dat  
 
 # Running the application
-To access the web application it must first be activated using the following command:
-python3 manage.py runserver
+To access the web application it must first be activated using the following command:  
+python3 manage.py runserver  
 This command will return the address at which the application can be found. Navigating to this address will give access to the application
