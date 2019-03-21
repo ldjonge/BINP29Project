@@ -1,3 +1,8 @@
+h1{
+  color:red;
+  align-content: center;
+}
+
 h1 a{
   color:red;
   align-content: center;
@@ -22,6 +27,14 @@ p {
 #content {
   position:relative;
   left: 100px;
+}
+
+#footnote {
+  position:fixed;
+  bottom: 5px;
+  font-size: 10px;
+  background-color: black;
+  color:white;
 }
 
 a {
