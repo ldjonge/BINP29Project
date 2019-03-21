@@ -19,36 +19,44 @@ def getId(request):
         if request.GET:
             if request.GET['nameSearch']:
                 try:
-                    taxon = Names.objects.get(altName=request.GET['nameSearch'])
+                    taxon = Names.objects.get(altName__iexact=request.GET['nameSearch'])
                     idNumber = taxon.idNumber
                     return HttpResponseRedirect(reverse('results', args=(idNumber,)))
                 except:
-                    return HttpResponse("Invalid query")
+                    return HttpResponseRedirect("invalid")
             elif request.GET['idSearch']:
                 try:
                     idNumber = request.GET['idSearch']
                     taxon = Tax.objects.get(idNumber = idNumber)
                     return HttpResponseRedirect(reverse('results', args=(idNumber,)))
                 except:
-                    return HttpResponse("Invalid query")
+                    return HttpResponseRedirect("invalid")
             else:
                 return HttpResponseRedirect('/taxInfo/')
+
+def invalid(request):
+    template = loader.get_template('taxInfo/invalid.html')
+    context = {}
+    return HttpResponse(template.render(context,request))
 
 def results(request, idNumber):
     template = loader.get_template('taxInfo/results.html')
     try:
         result = Tax.objects.get(idNumber = idNumber)
         current = result
-        lineage = []
+        lineageS = []
+        lineageL = []
         while current.parent != 0 and current.parent !=  1:
             current = Tax.objects.get(idNumber = current.parent)
             if current.rank != "no rank":
-                lineage.append("{}: {}".format(current.rank, current.sciName))
+                lineageS.append("{}: {}".format(current.rank, current.sciName))
+                lineageL.append("{}: {}".format(current.rank, current.sciName))
             else:
-                lineage.append("{}".format(current.sciName))
+                lineageL.append("{}".format(current.sciName))
     except:
         result = "Unidentified"
-        lineage = []
+        lineageL = []
+        lineageS = []
 
-    context = {'result': result, 'lineage': lineage}
+    context = {'result': result, 'lineageL': lineageL, 'lineageS': lineageS}
     return HttpResponse(template.render(context, request))

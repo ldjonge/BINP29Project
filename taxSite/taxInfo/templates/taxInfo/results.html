@@ -1,5 +1,19 @@
+<head>
+  {% load staticfiles %}
+<link rel="stylesheet" type = "text/css" href="{% static 'taxInfo/style.css' %}">
+<script type="text/javascript" src="{% static 'taxInfo/lineage.js' %}"></script>
 {% if result %}
-  <h1 style="color:red">{{ result.sciName }}</h1>
+<title>{{ result.sciName }}</title>
+{% else %}
+<title>Unidentified Taxon</title>
+{% endif %}
+</head>
+<body>
+{% if result != "Unidentified" %}
+  <div id="header">
+  <h1>  <a href="https://www.uniprot.org/taxonomy/{{ result.idNumber }}">{{ result.sciName }}</a></h1>
+  </div>
+  <div id="content">
   <p>Taxon ID: {{ result.idNumber }}<br>
   Scientific Name: {{ result.sciName }}<br>
   {% if result.comName %}
@@ -15,12 +29,30 @@
   Mitochondrial Genetic Code: {{ result.mgcID }}<br>
   {% endif %}
   </p>
+  <p id="linkBack"><a href='/taxInfo/'>Search again</a></p>
+  <div id="lineageLong">
   <h2>Lineage</h2>
   <p>
-  {% for tax in lineage %}
+  {% for tax in lineageL %}
   {{ tax }}<br>
   {% endfor %}
   </p>
+  <button type="button" id="butnL" onclick="showShort()">Show fewer details</button>
+  </div>
+  <div id="lineageShort">
+    <h2>Lineage</h2>
+    <p>
+    {% for tax in lineageS %}
+    {{ tax }}<br>
+    {% endfor %}
+    </p>
+    <button type="button" id="butnS" onclick="showLong()">Show more details</button>
+  </div>
+  </div>
 {% else %}
+  <div id="content">
   <p>Unidentified ID</p>
+  <p id="linkBack"><a href='/taxInfo/'>Search again</a></p>
+  </div>
 {% endif %}
+</body>

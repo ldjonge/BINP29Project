@@ -1,11 +1,24 @@
+<head>
+  {% load static %}
+<link rel="stylesheet" type = "text/css" href="{% static 'taxInfo/style.css' %}">
+<title>Taxon Finder</title>
+</head>
+<body>
+  <div id="header">
 <h1>Taxon Finder</h1>
-
+</div>
+<div id="content">
 <p>Please enter a taxon Name or ID<p>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form id="searchForm" action="getId" method="get">
+
   {% csrf_token %}
-  {{ form }}
+  <ul>
+  {{ form.as_ul }}
   <input type="submit" value="Search">
+  </ul>
 </form>
+</div>
+</body>

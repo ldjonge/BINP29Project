@@ -1,0 +1,33 @@
+h1 a{
+  color:red;
+  align-content: center;
+}
+
+#lineageLong {
+  display:none;
+}
+
+#header {
+text-align: center;
+}
+
+p {
+  font-size: 20px;
+}
+
+#searchForm {
+  font-size: 20px;
+}
+
+#content {
+  position:relative;
+  left: 100px;
+}
+
+a {
+  color:blue;
+}
+
+ul {
+list-style-type: none;
+}
